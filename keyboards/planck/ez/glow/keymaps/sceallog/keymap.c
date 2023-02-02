@@ -3,35 +3,7 @@
 #include "muse.h"
 #endif
 #include "eeprom.h"
-#include "keymap_german.h"
-#include "keymap_nordic.h"
-#include "keymap_french.h"
-#include "keymap_spanish.h"
-#include "keymap_hungarian.h"
-#include "keymap_swedish.h"
-#include "keymap_br_abnt2.h"
-#include "keymap_canadian_multilingual.h"
-#include "keymap_german_ch.h"
 #include "keymap_jp.h"
-#include "keymap_korean.h"
-#include "keymap_bepo.h"
-#include "keymap_italian.h"
-#include "keymap_slovenian.h"
-#include "keymap_lithuanian_azerty.h"
-#include "keymap_danish.h"
-#include "keymap_norwegian.h"
-#include "keymap_portuguese.h"
-#include "keymap_contributions.h"
-#include "keymap_czech.h"
-#include "keymap_romanian.h"
-#include "keymap_russian.h"
-#include "keymap_uk.h"
-#include "keymap_estonian.h"
-#include "keymap_belgian.h"
-#include "keymap_us_international.h"
-#include "keymap_croatian.h"
-#include "keymap_turkish_q.h"
-#include "keymap_slovak.h"
 #include "keymap_steno.h"
 
 #define KC_MAC_UNDO LGUI(KC_Z)
@@ -53,6 +25,11 @@
 
 enum planck_keycodes {
   RGB_SLD = EZ_SAFE_RANGE,
+  QWERTY = SAFE_RANGE,
+  QWRTOFF,
+  COLEMAK,
+  ENT_PLV,
+  EXT_PLV,
 };
 
 enum tap_dance_codes {
@@ -65,8 +42,8 @@ enum planck_layers {
   _LOWER,
   _RAISE,
   _ADJUST,
-  _LAYER4,
-  _LAYER5,
+  _QWERTY,
+  _PLOVER,
 };
 
 #define LOWER MO(_LOWER)
@@ -76,23 +53,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_planck_grid(
     KC_TAB,         KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,           KC_J,           KC_L,           KC_U,           KC_Y,           KC_SCOLON,      KC_BSPACE,      
     KC_DELETE,      KC_A,           KC_R,           KC_S,           KC_T,           KC_G,           KC_K,           KC_N,           KC_E,           KC_I,           KC_O,           KC_QUOTE,       
-    TD(DANCE_0),    KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,           KC_M,           KC_H,           KC_COMMA,       KC_DOT,         KC_SLASH,       CAPS_WORD,      
+    KC_LSPO,    KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,           KC_M,           KC_H,           KC_COMMA,       KC_DOT,         KC_SLASH,       CAPS_WORD,      
     MT(MOD_LCTL, KC_ESCAPE),KC_LCTRL,       KC_LALT,        KC_LGUI,        LOWER,          KC_SPACE,       KC_NO,          RAISE,          KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT
   ),
 
   [_LOWER] = LAYOUT_planck_grid(
+    KC_GRAVE,       KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_TRANSPARENT, 
+    KC_PGUP,        KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_F6,          KC_4,        KC_5,        KC_6,        KC_KP_PLUS,     KC_KP_ASTERISK, 
+    KC_PGDOWN,      KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         KC_1,        KC_2,        KC_3,        KC_KP_MINUS,    KC_KP_SLASH,    
+    KC_HOME,        KC_END,         KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_BSPACE,      KC_NO,          KC_0,        KC_KP_DOT,      KC_KP_COMMA,    KC_TAB,         KC_ENTER
+  ),
+  
+  [_RAISE] = LAYOUT_planck_grid(
     KC_TILD,        KC_EXLM,        KC_AT,          KC_HASH,        KC_DLR,         KC_PERC,        KC_CIRC,        KC_AMPR,        KC_ASTR,        KC_LPRN,        KC_RPRN,        KC_TRANSPARENT, 
-    KC_DELETE,      KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_F6,          KC_UNDS,        KC_PLUS,        KC_LCBR,        KC_RCBR,        KC_PIPE,        
-    KC_TRANSPARENT, KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         KC_NONUS_HASH,  KC_NONUS_BSLASH,KC_HOME,        KC_END,         KC_TRANSPARENT, 
+    KC_DELETE,      KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_F6,          KC_MINS,        KC_EQL,        KC_LBRC,        KC_RBRC,        KC_BSLS,        
+    KC_TRANSPARENT, KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         KC_NUHS,        KC_NUBS,        KC_HOME,        KC_END,         KC_AT, 
     KC_COMMA,       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_TRANSPARENT, KC_MEDIA_NEXT_TRACK,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_MEDIA_PLAY_PAUSE
   ),
 
-  [_RAISE] = LAYOUT_planck_grid(
-    KC_GRAVE,       KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_TRANSPARENT, 
-    KC_PGUP,        KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_F6,          KC_KP_4,        KC_KP_5,        KC_KP_6,        KC_KP_PLUS,     KC_KP_ASTERISK, 
-    KC_PGDOWN,      KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         KC_KP_1,        KC_KP_2,        KC_KP_3,        KC_KP_MINUS,    KC_KP_SLASH,    
-    KC_HOME,        KC_END,         KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_BSPACE,      KC_NO,          KC_KP_0,        KC_KP_DOT,      KC_KP_COMMA,    KC_TAB,         KC_ENTER
-  ),
+  
 
   [_ADJUST] = LAYOUT_planck_grid(
     KC_TRANSPARENT, RESET,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_ASTG,        KC_TRANSPARENT, KC_TRANSPARENT, 
@@ -101,15 +80,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
   ),
 
-  [_LAYER4] = LAYOUT_planck_grid(
+  [_QWERTY] = LAYOUT_planck_grid(
     KC_TAB,         KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSPACE,      
     MT(MOD_LCTL, KC_ESCAPE),KC_A,           KC_S,           KC_D,           KC_F,           KC_G,           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_QUOTE,       
     TD(DANCE_1),    KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_SPACE,       KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
   ),
 
-  [_LAYER5] = LAYOUT_planck_grid(
-    STN_N1,         STN_N2,         STN_N3,         STN_N4,         STN_N5,         STN_N6,         STN_N7,         STN_N8,         STN_N9,         STN_NA,         STN_NB,         KC_TRANSPARENT, 
+  [_PLOVER] = LAYOUT_planck_grid(
+    STN_N1,         STN_N2,         STN_N3,         STN_N4,         STN_N5,         STN_N6,         STN_N7,         STN_N8,         STN_N9,         STN_NA,         STN_NB,         EXT_PLV, 
     STN_S1,         STN_TL,         STN_PL,         STN_HL,         STN_ST1,        STN_FN,         STN_ST3,        STN_FR,         STN_PR,         STN_LR,         STN_TR,         STN_DR,         
     STN_S2,         STN_KL,         STN_WL,         STN_RL,         STN_ST2,        KC_NO,          STN_ST4,        STN_RR,         STN_BR,         STN_GR,         STN_SR,         STN_ZR,         
     KC_NO,          KC_NO,          KC_NO,          STN_A,          STN_O,          STN_E,          KC_NO,          STN_U,          KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT
@@ -117,14 +96,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-const uint16_t PROGMEM combo0[] = { KC_TAB, KC_TAB, KC_SPACE, COMBO_END};
-const uint16_t PROGMEM combo1[] = { KC_T, KC_N, COMBO_END};
-const uint16_t PROGMEM combo2[] = { KC_COMMA, KC_DOT, COMBO_END};
+enum combos {
+  TABSP_STENO,
+  TN_ENT,
+  COMDOT_CAPS,
+  QWL_LAYER_ON,
+  QWL_LAYER_OFF,
+  ARST_LEAD,
+  COMBO_LENGTH
+};
 
-combo_t key_combos[COMBO_COUNT] = {
-    COMBO(combo0, TG(4)),
-    COMBO(combo1, KC_ENTER),
-    COMBO(combo2, KC_CAPSLOCK),
+uint16_t COMBO_LEN = COMBO_LENGTH;
+
+const uint16_t PROGMEM tabsp_steno[] = { KC_TAB, KC_SPACE, COMBO_END};
+const uint16_t PROGMEM tn_ent[] = { KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM comdot_caps[] = { KC_COMMA, KC_DOT, COMBO_END};
+const uint16_t PROGMEM qwl_layer_on[] = { KC_Q, KC_W, KC_L, COMBO_END};
+const uint16_t PROGMEM qwl_layer_off[] = { KC_Q, KC_W, KC_O, COMBO_END};
+const uint16_t PROGMEM arst_lead[] = { KC_A, KC_R, KC_S, KC_T, COMBO_END};
+
+combo_t key_combos[] = {
+    [TABSP_STENO] = COMBO(tabsp_steno, ENT_PLV),
+    [TN_ENT] = COMBO(tn_ent, KC_ENTER),
+    [COMDOT_CAPS] = COMBO(comdot_caps, CAPS_WORD),
+    [QWL_LAYER_ON] = COMBO(qwl_layer_on, QWERTY),
+    [QWL_LAYER_OFF] = COMBO(qwl_layer_off, QWRTOFF),
+    [ARST_LEAD] = COMBO(arst_lead, KC_LEAD),
 };
 
 extern rgb_config_t rgb_matrix_config;
@@ -136,9 +133,9 @@ void keyboard_post_init_user(void) {
 const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
     [0] = { {0,255,255}, {21,255,255}, {36,255,255}, {55,255,255}, {86,255,255}, {129,255,128}, {11,178,255}, {11,178,255}, {172,255,255}, {192,255,255}, {207,218,204}, {215,255,255}, {0,255,255}, {21,255,255}, {36,255,255}, {55,255,255}, {0,0,255}, {129,255,128}, {11,178,255}, {0,0,255}, {172,255,255}, {192,255,255}, {207,218,204}, {207,218,204}, {0,255,255}, {21,255,255}, {36,255,255}, {55,255,255}, {86,255,255}, {129,255,128}, {129,255,255}, {11,178,255}, {172,255,255}, {192,255,255}, {207,218,204}, {207,218,204}, {0,255,255}, {21,255,255}, {36,255,255}, {55,255,255}, {86,255,255}, {129,255,255}, {129,255,255}, {172,255,255}, {192,255,255}, {207,218,204}, {207,218,204} },
 
-    [1] = { {172,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} },
-
-    [2] = { {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {0,245,245}, {0,245,245}, {0,245,245}, {172,255,255}, {81,218,204}, {131,255,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,245,245}, {0,245,245}, {0,245,245}, {29,218,204}, {29,218,204}, {131,255,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,245,245}, {0,245,245}, {0,245,245}, {29,218,204}, {29,218,204}, {131,255,255}, {131,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,255}, {0,245,245}, {29,218,204}, {29,218,204}, {0,0,255}, {0,0,255} },
+    [1] = { {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {172,255,255}, {0,245,245}, {0,245,245}, {0,245,245}, {172,255,255}, {81,218,204}, {131,255,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,245,245}, {0,245,245}, {0,245,245}, {29,218,204}, {29,218,204}, {131,255,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,245,245}, {0,245,245}, {0,245,245}, {29,218,204}, {29,218,204}, {131,255,255}, {131,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,255}, {0,245,245}, {29,218,204}, {29,218,204}, {0,0,255}, {0,0,255} },
+    
+    [2] = { {172,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} },
 
     [3] = { {0,0,0}, {0,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {131,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {141,111,255}, {141,111,255}, {141,111,255}, {0,0,0}, {29,218,204}, {29,218,204}, {29,218,204}, {29,218,204}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {29,255,255}, {29,255,255}, {29,255,255}, {0,0,0}, {0,0,0}, {29,218,204}, {29,218,204}, {29,218,204}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} },
 
@@ -193,17 +190,17 @@ void rgb_matrix_indicators_user(void) {
   }
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//   switch (keycode) {
 
-    case RGB_SLD:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-      }
-      return false;
-  }
-  return true;
-}
+//     case RGB_SLD:
+//       if (record->event.pressed) {
+//         rgblight_mode(1);
+//       }
+//       return false;
+//   }
+//   return true;
+// }
 
 #ifdef AUDIO_ENABLE
 bool muse_mode = false;
@@ -211,6 +208,8 @@ uint8_t last_muse_note = 0;
 uint16_t muse_counter = 0;
 uint8_t muse_offset = 70;
 uint16_t muse_tempo = 50;
+float plover_song[][2] = SONG(PLOVER_SOUND);
+float plover_gb_song[][2] = SONG(PLOVER_GOODBYE_SOUND);
 
 void encoder_update(bool clockwise) {
     if (muse_mode) {
@@ -246,10 +245,177 @@ void encoder_update(bool clockwise) {
         #endif
         }
     }
-}
+};
+
+LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
-#ifdef AUDIO_ENABLE
+
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+
+		// Vim: write.
+    SEQ_ONE_KEY(KC_W) {
+      register_code(KC_ESC);
+      unregister_code(KC_ESC);
+      SEND_STRING(":w");
+      register_code(KC_ENTER);
+      unregister_code(KC_ENTER);
+    }
+		// Vim: quit.
+    SEQ_ONE_KEY(KC_Q) {
+      register_code(KC_ESC);
+      unregister_code(KC_ESC);
+      SEND_STRING(":q");
+      register_code(KC_ENTER);
+      unregister_code(KC_ENTER);
+    }
+		// Vim: search and replace all.
+    SEQ_TWO_KEYS(KC_S, KC_R) {
+      register_code(KC_ESC);
+      unregister_code(KC_ESC);
+      SEND_STRING(":%s/old/new/g");
+    }
+		// Vim: write and quit.
+    SEQ_TWO_KEYS(KC_W, KC_Q) {
+      register_code(KC_ESC);
+      unregister_code(KC_ESC);
+      SEND_STRING(":wq");
+      register_code(KC_ENTER);
+      unregister_code(KC_ENTER);
+    }
+		// Tmux: split pane vertically.
+		SEQ_ONE_KEY(KC_V) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_V);
+			unregister_code(KC_V);
+		}
+		// Tmux: split pane horizontally.
+		SEQ_ONE_KEY(KC_H) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_H);
+			unregister_code(KC_H);
+		}
+		// Tmux: zoom into/out of current pane.
+		SEQ_ONE_KEY(KC_Z) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_Z);
+			unregister_code(KC_Z);
+		}
+		// Tmux: create new window.
+		SEQ_ONE_KEY(KC_C) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_C);
+			unregister_code(KC_C);
+		}
+		// Tmux: move to previous window.
+		SEQ_ONE_KEY(KC_P) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_P);
+			unregister_code(KC_P);
+		}
+		// Tmux: move to next window.
+		SEQ_ONE_KEY(KC_N) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_N);
+			unregister_code(KC_N);
+		}
+		// Tmux: kill current window.
+		SEQ_ONE_KEY(KC_K) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_LSFT);
+			register_code(KC_7);
+			unregister_code(KC_7);
+			unregister_code(KC_LSFT);
+		}
+		// Tmux: disconnect current session.
+		SEQ_ONE_KEY(KC_D) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_D);
+			unregister_code(KC_D);
+		}
+		// Tmux: show session list.
+		SEQ_ONE_KEY(KC_S) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_S);
+			unregister_code(KC_S);
+		}
+		// Tmux: move to left pane.
+		SEQ_ONE_KEY(KC_LEFT) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_LEFT);
+			unregister_code(KC_LEFT);
+		}
+		// Tmux: move to right pane.
+		SEQ_ONE_KEY(KC_RGHT) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_RGHT);
+			unregister_code(KC_RGHT);
+		}
+		// Tmux: move to lower pane.
+		SEQ_ONE_KEY(KC_DOWN) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_DOWN);
+			unregister_code(KC_DOWN);
+		}
+		// Tmux: move to upper pane.
+		SEQ_ONE_KEY(KC_UP) {
+			register_code(KC_LCTL);
+			register_code(KC_B);
+			unregister_code(KC_B);
+			unregister_code(KC_LCTL);
+			register_code(KC_UP);
+			unregister_code(KC_UP);
+		}
+		// VSCode: close all tabs.
+    SEQ_TWO_KEYS(KC_K, KC_W) {
+      register_code(KC_LGUI);
+      register_code(KC_K);
+      unregister_code(KC_K);
+      unregister_code(KC_LGUI);
+      register_code(KC_W);
+      unregister_code(KC_W);
+    }
+  }
+  
+  #ifdef AUDIO_ENABLE
     if (muse_mode) {
         if (muse_counter == 0) {
             uint8_t muse_note = muse_offset + SCALE[muse_clock_pulse()];
@@ -261,7 +427,7 @@ void matrix_scan_user(void) {
         }
         muse_counter = (muse_counter + 1) % muse_tempo;
     }
-#endif
+  #endif
 }
 
 bool music_mask_user(uint16_t keycode) {
@@ -343,41 +509,108 @@ void dance_0_reset(qk_tap_dance_state_t *state, void *user_data) {
     }
     dance_state[0].step = 0;
 }
-void on_dance_1(qk_tap_dance_state_t *state, void *user_data);
-void dance_1_finished(qk_tap_dance_state_t *state, void *user_data);
-void dance_1_reset(qk_tap_dance_state_t *state, void *user_data);
+// void on_dance_1(qk_tap_dance_state_t *state, void *user_data);
+// void dance_1_finished(qk_tap_dance_state_t *state, void *user_data);
+// void dance_1_reset(qk_tap_dance_state_t *state, void *user_data);
 
-void on_dance_1(qk_tap_dance_state_t *state, void *user_data) {
-    if(state->count == 3) {
-        tap_code16(KC_LSPO);
-        tap_code16(KC_LSPO);
-        tap_code16(KC_LSPO);
-    }
-    if(state->count > 3) {
-        tap_code16(KC_LSPO);
-    }
-}
+// void on_dance_1(qk_tap_dance_state_t *state, void *user_data) {
+//     if(state->count == 3) {
+//         tap_code16(KC_LSPO);
+//         tap_code16(KC_LSPO);
+//         tap_code16(KC_LSPO);
+//     }
+//     if(state->count > 3) {
+//         tap_code16(KC_LSPO);
+//     }
+// }
 
-void dance_1_finished(qk_tap_dance_state_t *state, void *user_data) {
-    dance_state[1].step = dance_step(state);
-    switch (dance_state[1].step) {
-        case SINGLE_TAP: register_code16(KC_LSPO); break;
-        case DOUBLE_TAP: register_code16(KC_RPRN); break;
-        case DOUBLE_SINGLE_TAP: tap_code16(KC_LSPO); register_code16(KC_LSPO);
-    }
-}
+// void dance_1_finished(qk_tap_dance_state_t *state, void *user_data) {
+//     dance_state[1].step = dance_step(state);
+//     switch (dance_state[1].step) {
+//         case SINGLE_TAP: register_code16(KC_LSPO); break;
+//         case DOUBLE_TAP: register_code16(KC_RPRN); break;
+//         case DOUBLE_SINGLE_TAP: tap_code16(KC_LSPO); register_code16(KC_LSPO);
+//     }
+// }
 
-void dance_1_reset(qk_tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    switch (dance_state[1].step) {
-        case SINGLE_TAP: unregister_code16(KC_LSPO); break;
-        case DOUBLE_TAP: unregister_code16(KC_RPRN); break;
-        case DOUBLE_SINGLE_TAP: unregister_code16(KC_LSPO); break;
-    }
-    dance_state[1].step = 0;
-}
+// void dance_1_reset(qk_tap_dance_state_t *state, void *user_data) {
+//     wait_ms(10);
+//     switch (dance_state[1].step) {
+//         case SINGLE_TAP: unregister_code16(KC_LSPO); break;
+//         case DOUBLE_TAP: unregister_code16(KC_RPRN); break;
+//         case DOUBLE_SINGLE_TAP: unregister_code16(KC_LSPO); break;
+//     }
+//     dance_state[1].step = 0;
+// }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
         [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_0, dance_0_finished, dance_0_reset),
-        [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_1, dance_1_finished, dance_1_reset),
+        // [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_1, dance_1_finished, dance_1_reset),
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    // case RGB_SLD:
+    //   if (record->event.pressed) {
+    //     rgblight_mode(1);
+    //   }
+    //   return false;
+    //   break;
+    case QWERTY:
+      if (!record->event.pressed) {
+        #ifdef AUDIO_ENABLE
+          stop_all_notes();
+          PLAY_SONG(plover_song);
+        #endif
+        layer_on(_QWERTY);
+      }
+      return false;
+      break;
+    case QWRTOFF:
+      if (record ->event.pressed) {
+        #ifdef AUDIO_ENABLE
+          PLAY_SONG(plover_gb_song);
+        #endif
+        layer_off(_QWERTY);
+      }
+      return false;
+      break;
+    case COLEMAK:
+      if (record->event.pressed) {
+        default_layer_set(_BASE);
+      }
+      return false;
+      break;
+    // case BACKLIT:
+    //   if (record->event.pressed) {
+    //     register_code(KC_RSFT);
+    //     #ifdef BACKLIGHT_ENABLE
+    //       backlight_step();
+    //     #endif
+    //   } else {
+    //     unregister_code(KC_RSFT);
+    //   }
+    //   return false;
+    //   break;
+    case ENT_PLV:
+      if (!record->event.pressed) {
+        #ifdef AUDIO_ENABLE
+          stop_all_notes();
+          PLAY_SONG(plover_song);
+        #endif
+        layer_on(_PLOVER);
+      }
+      return false;
+      break;
+    case EXT_PLV:
+      if (record->event.pressed) {
+        #ifdef AUDIO_ENABLE
+          PLAY_SONG(plover_gb_song);
+        #endif
+        layer_off(_PLOVER);
+      }
+      return false;
+      break;
+  }
+  return true;
+}
