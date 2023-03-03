@@ -47,6 +47,7 @@ enum planck_keycodes {
   ENT_PLV,
   EXT_PLV,
   ENT_FCT,
+  EXT_FCT,
 };
 
 enum tap_dance_codes {
@@ -61,6 +62,7 @@ enum planck_layers {
   _ADJUST,
   _QWERTY,
   _PLOVER,
+  _FACTORIO,
 };
 
 #define LOWER TT(_LOWER)
@@ -203,8 +205,8 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
     [6] = { 
       {0,255,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,255,255}, 
       {85,255,255}, {85,255,255}, {170,255,255}, {0,255,255}, {170,255,255}, {170,255,255}, {170,255,255}, {106,255,255}, {106,255,255}, {106,255,255}, {0,0,0}, {0,0,255}, 
-      {85,255,255}, {85,255,255}, {0,255,255}, {0,255,255}, {0,255,255}, {170,255,255}, {170,255,255}, 106127,255,255}, {106,255,255}, {106,255,255}, {170,255,255}, {170,255,255}, 
-      {170,255,255}, {170,255,255}, {170,255,255}, {170,255,255}, {170,255,255}, {170,255,255}, 106172,255,255}, {106,255,255}, {106,255,255}, {106,255,255}, {170,255,255} 
+      {85,255,255}, {85,255,255}, {0,255,255}, {0,255,255}, {0,255,255}, {170,255,255}, {170,255,255}, {106,255,255}, {106,255,255}, {106,255,255}, {170,255,255}, {170,255,255}, 
+      {170,255,255}, {170,255,255}, {170,255,255}, {170,255,255}, {170,255,255}, {170,255,255}, {106,255,255}, {106,255,255}, {106,255,255}, {106,255,255}, {170,255,255} 
       },
 };
 
@@ -245,6 +247,9 @@ void rgb_matrix_indicators_user(void) {
       break;
     case 5:
       set_layer_color(5);
+      break;
+    case 6:
+      set_layer_color(6);
       break;
    default:
     if (rgb_matrix_get_flags() == LED_FLAG_NONE)
@@ -457,7 +462,7 @@ void matrix_scan_user(void) {
 			unregister_code(KC_LCTL);
 			register_code(KC_DOWN);
 			unregister_code(KC_DOWN);
-		}127
+		}
 		// Tmux: move to upper pane.
 		SEQ_ONE_KEY(KC_UP) {
 			register_code(KC_LCTL);
@@ -655,7 +660,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //   }
     //   return false;
     //   break;
-    case ent_plv:
+    case ENT_PLV:
       if (!record->event.pressed) {
         #ifdef AUDIO_ENABLE
           stop_all_notes();
