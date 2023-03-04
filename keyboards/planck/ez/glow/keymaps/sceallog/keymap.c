@@ -123,13 +123,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESC,         KC_1,         KC_2,         KC_3,         KC_4,         KC_5,         KC_6,         KC_7,         KC_8,         KC_9,         KC_0,         EXT_FCT,
     KC_TAB,         KC_LALT,         KC_T,         KC_W,         KC_M,        KC_B,         KC_O,        LALT(KC_R),         LALT(KC_E),         LALT(KC_L),         KC_NO,         KC_ASTG,
     KC_SPACE,         KC_ENTER,         KC_A,         KC_S,         KC_D,        KC_X,          KC_Z,        LALT(KC_B),         LALT(KC_D),         LALT(KC_U),         KC_GRV,         KC_PPLS,
-    KC_C,          KC_R,          KC_G,          KC_F,          LCTL_T(KC_Q),          LALT_T(KC_E),          KC_NO,          LCTL(KC_C),          LCTL(KC_P),        LCTL(KC_U),        LCTL(KC_X),          KC_PMNS
+    KC_C,          KC_R,          KC_G,          KC_F,          LCTL_T(KC_Q),          LSFT_T(KC_E),          KC_NO,          LCTL(KC_C),          LCTL(KC_V),        LCTL(KC_U),        LCTL(KC_X),          KC_PMNS
   ),
 
 };
 
 enum combos {
-  TABSP_STENO,
+  TABDEL_STENO,
   // TN_ENT,
   COMDOT_CAPS,
   QWL_LAYER_ON,
@@ -141,7 +141,7 @@ enum combos {
 
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
-const uint16_t PROGMEM tabsp_steno[] = { KC_TAB, KC_SPACE, COMBO_END};
+const uint16_t PROGMEM tabdel_steno[] = { KC_TAB, KC_DELETE, COMBO_END};
 // const uint16_t PROGMEM tn_ent[] = { KC_T, KC_N, COMBO_END};
 const uint16_t PROGMEM comdot_caps[] = { KC_COMMA, KC_DOT, COMBO_END};
 const uint16_t PROGMEM qwl_layer_on[] = { KC_Q, KC_W, KC_L, COMBO_END};
@@ -150,7 +150,7 @@ const uint16_t PROGMEM wf_lead[] = { KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM fo_factorio[] = { KC_F, KC_O, COMBO_END};
 
 combo_t key_combos[] = {
-    [TABSP_STENO] = COMBO(tabsp_steno, ENT_PLV),
+    [TABDEL_STENO] = COMBO(tabdel_steno, ENT_PLV),
     // [TN_ENT] = COMBO(tn_ent, KC_ENTER),
     [COMDOT_CAPS] = COMBO(comdot_caps, CAPS_WORD),
     [QWL_LAYER_ON] = COMBO(qwl_layer_on, QWERTY),
