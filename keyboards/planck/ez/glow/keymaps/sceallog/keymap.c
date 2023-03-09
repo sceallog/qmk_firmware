@@ -123,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESC,         KC_1,         KC_2,         KC_3,         KC_4,         KC_5,         KC_6,         KC_7,         KC_8,         KC_9,         KC_0,         EXT_FCT,
     KC_TAB,         KC_LALT,         KC_T,         KC_W,         KC_M,        KC_B,         KC_O,        LALT(KC_R),         LALT(KC_E),         LALT(KC_L),         KC_NO,         KC_ASTG,
     KC_SPACE,         KC_ENTER,         KC_A,         KC_S,         KC_D,        KC_X,          KC_Z,        LALT(KC_B),         LALT(KC_D),         LALT(KC_U),         KC_GRV,         KC_PPLS,
-    KC_C,          KC_R,          KC_G,          KC_F,          LCTL_T(KC_Q),          LSFT_T(KC_E),          KC_NO,          LCTL(KC_C),          LCTL(KC_V),        LCTL(KC_U),        LCTL(KC_X),          KC_PMNS
+    KC_C,          KC_R,          KC_G,          KC_F,          LCTL_T(KC_Q),          LSFT_T(KC_E),          KC_NO,          LCTL(KC_C),          LCTL(KC_V),        LCTL(KC_Z),        LCTL(KC_X),          KC_PMNS
   ),
 
 };
