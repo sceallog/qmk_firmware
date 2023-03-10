@@ -73,8 +73,8 @@ enum planck_layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_planck_grid(
     KC_TAB,         KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_J,       KC_L,       KC_U,       KC_Y,       KC_SCOLON,  KC_BSPACE,
-    KC_DELETE,      KC_A,       KC_R,       KC_S,       KC_T,       KC_G,       KC_K,       KC_N,       KC_E,       KC_I,       KC_O,       KC_QUOTE,
-    KC_LSPO,        KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_M,       KC_H,       KC_COMMA,   KC_DOT,     KC_SLASH,   KC_RCPC,
+    KC_DELETE,      KC_A,       KC_R,       KC_S,       KC_T,       KC_G,       KC_M,       KC_N,       KC_E,       KC_I,       KC_O,       KC_QUOTE,
+    KC_LSPO,        KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_K,       KC_H,       KC_COMMA,   KC_DOT,     KC_SLASH,   KC_RCPC,
     CTL_T(KC_ESC),  KC_LCBR,    ALT_T(KC_LBRC),   LGUI_T(KC_ENT),    LOWER,      ALL_T(KC_SPACE),   KC_NO,      RAISE,      SGUI_T(KC_ENT),    RCAG_T(KC_RBRC),      KC_RCBR,    GUI
   ),
 
@@ -134,8 +134,8 @@ enum combos {
   COMDOT_CAPS,
   QWL_LAYER_ON,
   QWL_LAYER_OFF,
-  WF_LEAD,
-  FO_FACTORIO,
+  LEAD,
+  FACTORIO_LAYER,
   COMBO_LENGTH,
 };
 
@@ -146,8 +146,8 @@ const uint16_t PROGMEM tabdel_steno[] = { KC_TAB, KC_DELETE, COMBO_END};
 const uint16_t PROGMEM comdot_caps[] = { KC_COMMA, KC_DOT, COMBO_END};
 const uint16_t PROGMEM qwl_layer_on[] = { KC_Q, KC_W, KC_L, COMBO_END};
 const uint16_t PROGMEM qwl_layer_off[] = { KC_Q, KC_W, KC_O, COMBO_END};
-const uint16_t PROGMEM wf_lead[] = { KC_W, KC_F, COMBO_END};
-const uint16_t PROGMEM fo_factorio[] = { KC_F, KC_O, COMBO_END};
+const uint16_t PROGMEM lead[] = { KC_BSPACE, KC_QUOTE, COMBO_END};
+const uint16_t PROGMEM factorio_layer[] = { KC_SCOLON, KC_BSPACE, COMBO_END};
 
 combo_t key_combos[] = {
     [TABDEL_STENO] = COMBO(tabdel_steno, ENT_PLV),
@@ -155,8 +155,8 @@ combo_t key_combos[] = {
     [COMDOT_CAPS] = COMBO(comdot_caps, CAPS_WORD),
     [QWL_LAYER_ON] = COMBO(qwl_layer_on, QWERTY),
     [QWL_LAYER_OFF] = COMBO(qwl_layer_off, QWRTOFF),
-    [WF_LEAD] = COMBO(wf_lead, KC_LEAD),
-    [FO_FACTORIO] = COMBO(fo_factorio, ENT_FCT),
+    [LEAD] = COMBO(lead, KC_LEAD),
+    [FACTORIO_LAYER] = COMBO(factorio_layer, ENT_FCT),
 };
 
 extern rgb_config_t rgb_matrix_config;
