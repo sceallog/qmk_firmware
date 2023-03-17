@@ -74,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_planck_grid(
     KC_TAB,         KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_J,       KC_L,       KC_U,       KC_Y,       KC_SCOLON,  KC_BSPACE,
     KC_DELETE,      KC_A,       KC_R,       KC_S,       KC_T,       KC_G,       KC_M,       KC_N,       KC_E,       KC_I,       KC_O,       KC_QUOTE,
-    KC_LSPO,        KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_K,       KC_H,       KC_COMMA,   KC_DOT,     KC_SLASH,   KC_RCPC,
+    KC_LSPO,        KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_K,       KC_H,       KC_COMMA,   KC_DOT,     KC_SLASH,   KC_RSPC,
     CTL_T(KC_ESC),  KC_LCBR,    ALT_T(KC_LBRC),   LGUI_T(KC_ENT),    LOWER,      ALL_T(KC_SPACE),   KC_NO,      RAISE,      SGUI_T(KC_ENT),    RCAG_T(KC_RBRC),      KC_RCBR,    GUI
   ),
 
@@ -130,10 +130,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 enum combos {
   TABDEL_STENO,
-  // TN_ENT,
-  COMDOT_CAPS,
-  QWL_LAYER_ON,
-  QWL_LAYER_OFF,
+ // QWL_LAYER_ON,
+  QWERTY_LAYER_TOGGLE,
   LEAD,
   FACTORIO_LAYER,
   COMBO_LENGTH,
@@ -142,19 +140,15 @@ enum combos {
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
 const uint16_t PROGMEM tabdel_steno[] = { KC_TAB, KC_DELETE, COMBO_END};
-// const uint16_t PROGMEM tn_ent[] = { KC_T, KC_N, COMBO_END};
-const uint16_t PROGMEM comdot_caps[] = { KC_COMMA, KC_DOT, COMBO_END};
-const uint16_t PROGMEM qwl_layer_on[] = { KC_Q, KC_W, KC_L, COMBO_END};
-const uint16_t PROGMEM qwl_layer_off[] = { KC_Q, KC_W, KC_O, COMBO_END};
+const uint16_t PROGMEM qwerty_layer_toggle[] = { KC_COMM, KC_DOT, COMBO_END};
+//const uint16_t PROGMEM qwl_layer_off[] = { KC_Q, KC_W, KC_O, COMBO_END};
 const uint16_t PROGMEM lead[] = { KC_BSPACE, KC_QUOTE, COMBO_END};
 const uint16_t PROGMEM factorio_layer[] = { KC_SCOLON, KC_BSPACE, COMBO_END};
 
 combo_t key_combos[] = {
     [TABDEL_STENO] = COMBO(tabdel_steno, ENT_PLV),
-    // [TN_ENT] = COMBO(tn_ent, KC_ENTER),
-    [COMDOT_CAPS] = COMBO(comdot_caps, CAPS_WORD),
-    [QWL_LAYER_ON] = COMBO(qwl_layer_on, QWERTY),
-    [QWL_LAYER_OFF] = COMBO(qwl_layer_off, QWRTOFF),
+    [QWERTY_LAYER_TOGGLE] = COMBO(qwerty_layer_toggle, QWERTY),
+//    [QWL_LAYER_OFF] = COMBO(qwl_layer_off, QWRTOFF),
     [LEAD] = COMBO(lead, KC_LEAD),
     [FACTORIO_LAYER] = COMBO(factorio_layer, ENT_FCT),
 };
@@ -534,65 +528,65 @@ typedef struct {
     uint8_t step;
 } tap;
 
-enum {
-    SINGLE_TAP = 1,
-    SINGLE_HOLD,
-    DOUBLE_TAP,
-    DOUBLE_HOLD,
-    DOUBLE_SINGLE_TAP,
-    MORE_TAPS
-};
-
-static tap dance_state[2];
-
-uint8_t dance_step(qk_tap_dance_state_t *state);
-
-uint8_t dance_step(qk_tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return SINGLE_TAP;
-        else return SINGLE_HOLD;
-    } else if (state->count == 2) {
-        if (state->interrupted) return DOUBLE_SINGLE_TAP;
-        else if (state->pressed) return DOUBLE_HOLD;
-        else return DOUBLE_TAP;
-    }
-    return MORE_TAPS;
-}
-
-
-void on_dance_0(qk_tap_dance_state_t *state, void *user_data);
-void dance_0_finished(qk_tap_dance_state_t *state, void *user_data);
-void dance_0_reset(qk_tap_dance_state_t *state, void *user_data);
-
-void on_dance_0(qk_tap_dance_state_t *state, void *user_data) {
-    if(state->count == 3) {
-        tap_code16(KC_LSPO);
-        tap_code16(KC_LSPO);
-        tap_code16(KC_LSPO);
-    }
-    if(state->count > 3) {
-        tap_code16(KC_LSPO);
-    }
-}
-
-void dance_0_finished(qk_tap_dance_state_t *state, void *user_data) {
-    dance_state[0].step = dance_step(state);
-    switch (dance_state[0].step) {
-        case SINGLE_TAP: register_code16(KC_LSPO); break;
-        case DOUBLE_TAP: register_code16(KC_RPRN); break;
-        case DOUBLE_SINGLE_TAP: tap_code16(KC_LSPO); register_code16(KC_LSPO);
-    }
-}
-
-void dance_0_reset(qk_tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    switch (dance_state[0].step) {
-        case SINGLE_TAP: unregister_code16(KC_LSPO); break;
-        case DOUBLE_TAP: unregister_code16(KC_RPRN); break;
-        case DOUBLE_SINGLE_TAP: unregister_code16(KC_LSPO); break;
-    }
-    dance_state[0].step = 0;
-}
+// enum {
+//     SINGLE_TAP = 1,
+//     SINGLE_HOLD,
+//     DOUBLE_TAP,
+//     DOUBLE_HOLD,
+//     DOUBLE_SINGLE_TAP,
+//     MORE_TAPS
+// };
+// 
+// static tap dance_state[2];
+// 
+// uint8_t dance_step(qk_tap_dance_state_t *state);
+// 
+// uint8_t dance_step(qk_tap_dance_state_t *state) {
+//     if (state->count == 1) {
+//         if (state->interrupted || !state->pressed) return SINGLE_TAP;
+//         else return SINGLE_HOLD;
+//     } else if (state->count == 2) {
+//         if (state->interrupted) return DOUBLE_SINGLE_TAP;
+//         else if (state->pressed) return DOUBLE_HOLD;
+//         else return DOUBLE_TAP;
+//     }
+//     return MORE_TAPS;
+// }
+// 
+// 
+// void on_dance_0(qk_tap_dance_state_t *state, void *user_data);
+// void dance_0_finished(qk_tap_dance_state_t *state, void *user_data);
+// void dance_0_reset(qk_tap_dance_state_t *state, void *user_data);
+// 
+// void on_dance_0(qk_tap_dance_state_t *state, void *user_data) {
+//     if(state->count == 3) {
+//         tap_code16(KC_LSPO);
+//         tap_code16(KC_LSPO);
+//         tap_code16(KC_LSPO);
+//     }
+//     if(state->count > 3) {
+//         tap_code16(KC_LSPO);
+//     }
+// }
+// 
+// void dance_0_finished(qk_tap_dance_state_t *state, void *user_data) {
+//     dance_state[0].step = dance_step(state);
+//     switch (dance_state[0].step) {
+//         case SINGLE_TAP: register_code16(KC_LSPO); break;
+//         case DOUBLE_TAP: register_code16(KC_RPRN); break;
+//         case DOUBLE_SINGLE_TAP: tap_code16(KC_LSPO); register_code16(KC_LSPO);
+//     }
+// }
+// 
+// void dance_0_reset(qk_tap_dance_state_t *state, void *user_data) {
+//     wait_ms(10);
+//     switch (dance_state[0].step) {
+//         case SINGLE_TAP: unregister_code16(KC_LSPO); break;
+//         case DOUBLE_TAP: unregister_code16(KC_RPRN); break;
+//         case DOUBLE_SINGLE_TAP: unregister_code16(KC_LSPO); break;
+//     }
+//     dance_state[0].step = 0;
+// }
 // void on_dance_1(qk_tap_dance_state_t *state, void *user_data);
 // void dance_1_finished(qk_tap_dance_state_t *state, void *user_data);
 // void dance_1_reset(qk_tap_dance_state_t *state, void *user_data);
@@ -627,10 +621,10 @@ void dance_0_reset(qk_tap_dance_state_t *state, void *user_data) {
 //     dance_state[1].step = 0;
 // }
 
-qk_tap_dance_action_t tap_dance_actions[] = {
-        [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_0, dance_0_finished, dance_0_reset),
-        // [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_1, dance_1_finished, dance_1_reset),
-};
+// qk_tap_dance_action_t tap_dance_actions[] = {
+//         [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_0, dance_0_finished, dance_0_reset),
+//         // [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_1, dance_1_finished, dance_1_reset),
+// };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -646,7 +640,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           stop_all_notes();
           PLAY_SONG(plover_song);
         #endif
-        layer_on(_QWERTY);
+        layer_invert(_QWERTY);
       }
       return false;
       break;
